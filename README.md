@@ -12,9 +12,30 @@ A data pipeline that turns monthly station SPEI values into district-level droug
 3. Assigns stations to Moldova's first-level administrative districts.
 4. Exports a spatial table (GeoParquet + CSV) ready to load into CARTO.
 
+## Severity classes
+
+SPEI-3 is classified into seven categories. A value exactly on a threshold belongs to the more extreme category.
+
+| SPEI-3 | Category | Code |
+|---|---|---|
+| SPEI ≥ 2.00 | Extremely wet | 3 |
+| 1.50 ≤ SPEI < 2.00 | Very wet | 2 |
+| 1.00 ≤ SPEI < 1.50 | Moderately wet | 1 |
+| −1.00 < SPEI < 1.00 | Normal | 0 |
+| −1.50 < SPEI ≤ −1.00 | Moderately dry | −1 |
+| −2.00 < SPEI ≤ −1.50 | Very dry | −2 |
+| SPEI ≤ −2.00 | Extremely dry | −3 |
+| missing | No data | (empty) |
+
+Each station's first two months have no SPEI-3 (a 3-month window needs 3 months of data) and are classed as "No data".
+
+References:
+- SPEI: Vicente-Serrano, S.M., Beguería, S. & López-Moreno, J.I. (2010). A multiscalar drought index sensitive to global warming: the Standardized Precipitation Evapotranspiration Index. *Journal of Climate* 23(7), 1696–1718.
+- Category thresholds: McKee, T.B., Doesken, N.J. & Kleist, J. (1993). The relationship of drought frequency and duration to time scales. *8th Conference on Applied Climatology*, Anaheim, CA, 179–184.
+
 ## Status
 
-Work in progress. Steps 0–2 (scaffold, inputs, loading and validation) are done.
+Work in progress. Steps 0–3 (scaffold, inputs, loading and validation, classification) are done.
 
 ## Quick start (Windows, PowerShell)
 
