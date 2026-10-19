@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moldova-drought"
+version = "0.1.0"
+description = "Station SPEI to district-level drought severity for a CARTO dashboard (Moldova, synthetic data)."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Tudor Trifan" }]
+requires-python = ">=3.14"
+# Loose ranges: what the code needs. Exact tested versions live in requirements.txt.
+dependencies = [
+    "pandas>=2.2",
+    "geopandas>=1.0",
+    "pyarrow>=15",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pandas-stubs",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# E/F: pycodestyle + pyflakes, I: import order, B: bugbear, UP: modern syntax, N: naming
+select = ["E", "F", "I", "B", "UP", "N"]
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
