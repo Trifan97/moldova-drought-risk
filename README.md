@@ -33,9 +33,26 @@ References:
 - SPEI: Vicente-Serrano, S.M., Beguería, S. & López-Moreno, J.I. (2010). A multiscalar drought index sensitive to global warming: the Standardized Precipitation Evapotranspiration Index. *Journal of Climate* 23(7), 1696–1718.
 - Category thresholds: McKee, T.B., Doesken, N.J. & Kleist, J. (1993). The relationship of drought frequency and duration to time scales. *8th Conference on Applied Climatology*, Anaheim, CA, 179–184.
 
+## From stations to districts
+
+Each of the 37 districts takes the monthly SPEI-3 series of one station:
+
+- If a station lies inside the district, that station is used (13 districts). If several do, the one closest to the district's interior point wins.
+- Otherwise the nearest station is used (24 districts).
+- Distances run from a point guaranteed to lie inside the district, computed in MOLDREF99 / Moldova TM (EPSG:4026), and are reported as `distance_km`.
+
+Every row records its `station`, whether that station lies inside the district (`station_inside`) and `distance_km`, so the dashboard can show where each value comes from.
+
+## Limitations
+
+- The climate data is synthetic (see the top of this page).
+- 24 of 37 districts have no station of their own and borrow the nearest one, up to 43 km away.
+- Transnistria is one long, narrow district: a single station (Tiraspol) represents all of it, although Rabnita, also inside it, is 93 km from its interior point.
+- Station values are not averaged: the mean of several SPEI series is not itself a standardised SPEI and pulls values towards Normal.
+
 ## Status
 
-Work in progress. Steps 0–3 (scaffold, inputs, loading and validation, classification) are done.
+Work in progress. Steps 0–4 (scaffold, inputs, loading and validation, classification, stations to districts) are done.
 
 ## Quick start (Windows, PowerShell)
 

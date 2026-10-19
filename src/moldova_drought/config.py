@@ -22,3 +22,7 @@ BOUNDARIES_SHA256 = "2358d3f23e7199eb8296d8859c09640c4db9f0a9cef31a429708015ee0a
 
 # Rough box around Moldova (min_lon, min_lat, max_lon, max_lat), for sanity-checking coordinates.
 MOLDOVA_BBOX = (26.6, 45.4, 30.2, 48.5)
+
+
+# MOLDREF99 / Moldova TM: Moldova's national projected CRS, in metres. Used for distances.
+MOLDOVA_CRS = "EPSG:4026"
