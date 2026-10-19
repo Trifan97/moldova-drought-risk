@@ -14,7 +14,7 @@ A data pipeline that turns monthly station SPEI values into district-level droug
 
 ## Status
 
-Work in progress. Steps 0–1 (scaffold, inputs) are done.
+Work in progress. Steps 0–2 (scaffold, inputs, loading and validation) are done.
 
 ## Quick start (Windows, PowerShell)
 

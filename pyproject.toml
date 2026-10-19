@@ -42,3 +42,9 @@ select = ["E", "F", "I", "B", "UP", "N"]
 [tool.mypy]
 strict = true
 files = ["src", "tests"]
+
+
+[[tool.mypy.overrides]]
+# geopandas ships without type hints, so mypy treats its objects as untyped (Any).
+module = ["geopandas", "geopandas.*"]
+ignore_missing_imports = true

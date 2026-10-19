@@ -19,3 +19,6 @@ BOUNDARIES_URL = (
 )
 BOUNDARIES_GEOJSON = EXTERNAL_DIR / "geoBoundaries-MDA-ADM1.geojson"
 BOUNDARIES_SHA256 = "2358d3f23e7199eb8296d8859c09640c4db9f0a9cef31a429708015ee0aea9b6"
+
+# Rough box around Moldova (min_lon, min_lat, max_lon, max_lat), for sanity-checking coordinates.
+MOLDOVA_BBOX = (26.6, 45.4, 30.2, 48.5)
