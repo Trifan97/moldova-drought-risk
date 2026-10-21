@@ -6,6 +6,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
 EXTERNAL_DIR = PROJECT_ROOT / "data" / "external"
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 
 # Synthetic station data, committed to the repo (see README > Data).
 STATIONS_CSV = RAW_DIR / "synthetic_station_spei.csv"
