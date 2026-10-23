@@ -11,25 +11,25 @@ from moldova_drought.classify import classify_spei
 @pytest.mark.parametrize(
     ("spei", "expected"),
     [
-        (-3.0, "Extremely dry"),
-        (-2.0, "Extremely dry"),
-        (-1.99, "Very dry"),
-        (-1.5, "Very dry"),
-        (-1.49, "Moderately dry"),
-        (-1.0, "Moderately dry"),
+        (-3.0, "Extreme drought"),
+        (-2.0, "Extreme drought"),
+        (-1.99, "Severe drought"),
+        (-1.5, "Severe drought"),
+        (-1.49, "Moderate drought"),
+        (-1.0, "Moderate drought"),
         (-0.995, "Normal"),
         (-0.99, "Normal"),
         (0.0, "Normal"),
         (0.99, "Normal"),
         (0.995, "Normal"),
-        (1.0, "Moderately wet"),
-        (1.49, "Moderately wet"),
-        (1.5, "Very wet"),
-        (1.99, "Very wet"),
-        (2.0, "Extremely wet"),
-        (3.0, "Extremely wet"),
-        (-math.inf, "Extremely dry"),
-        (math.inf, "Extremely wet"),
+        (1.0, "Moderate wet"),
+        (1.49, "Moderate wet"),
+        (1.5, "Severe wet"),
+        (1.99, "Severe wet"),
+        (2.0, "Extreme wet"),
+        (3.0, "Extreme wet"),
+        (-math.inf, "Extreme drought"),
+        (math.inf, "Extreme wet"),
         (math.nan, "No data"),
     ],
 )
@@ -51,7 +51,7 @@ def test_sorting_follows_severity_not_alphabet() -> None:
 
     ordered = result["severity"].sort_values().tolist()
 
-    assert ordered == ["Extremely dry", "Normal", "Extremely wet", "No data"]
+    assert ordered == ["Extreme drought", "Normal", "Extreme wet", "No data"]
 
 
 def test_keeps_the_input_index() -> None:

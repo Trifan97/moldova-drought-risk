@@ -65,4 +65,4 @@ def test_files_round_trip(tmp_path: Path) -> None:
     assert set(risk_back.geom_type) == {"Polygon"}
     assert set(monthly_back.geom_type) == {"Point"}
     assert risk_back.crs == monthly_back.crs == "EPSG:4326"
-    assert monthly_back["severity"].tolist() == ["Moderately dry", "Normal"] * 2
+    assert monthly_back["severity"].tolist() == ["Moderate drought", "Normal"] * 2

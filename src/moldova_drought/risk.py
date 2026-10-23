@@ -8,11 +8,11 @@ from moldova_drought.classify import CODES
 def drought_summary(table: pd.DataFrame) -> pd.DataFrame:
     """One row per district: % of months in drought per WMO normal, the change, the driest month.
 
-    "In drought" means Moderately dry or worse (SPEI-3 <= -1.0). Percentages count only
+    "In drought" means Moderate drought or worse (SPEI-3 <= -1.0). Percentages count only
     months with data: "No data" months are left out.
     """
     valid = table.dropna(subset=["spei_3"]).assign(
-        drought=lambda t: t["severity_code"] <= CODES["Moderately dry"]
+        drought=lambda t: t["severity_code"] <= CODES["Moderate drought"]
     )
     year = valid["date"].dt.year
     baseline = valid[year.between(1961, 1990)].groupby("district_id")["drought"].mean()
