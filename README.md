@@ -19,13 +19,13 @@ SPEI-3 is classified into seven categories. A value exactly on a threshold belon
 
 | SPEI-3 | Category | Code |
 |---|---|---|
-| SPEI ≥ 2.00 | Extremely wet | 3 |
-| 1.50 ≤ SPEI < 2.00 | Very wet | 2 |
-| 1.00 ≤ SPEI < 1.50 | Moderately wet | 1 |
+| SPEI ≥ 2.00 | Extreme wet | 3 |
+| 1.50 ≤ SPEI < 2.00 | Severe wet | 2 |
+| 1.00 ≤ SPEI < 1.50 | Moderate wet | 1 |
 | −1.00 < SPEI < 1.00 | Normal | 0 |
-| −1.50 < SPEI ≤ −1.00 | Moderately dry | −1 |
-| −2.00 < SPEI ≤ −1.50 | Very dry | −2 |
-| SPEI ≤ −2.00 | Extremely dry | −3 |
+| −1.50 < SPEI ≤ −1.00 | Moderate drought | −1 |
+| −2.00 < SPEI ≤ −1.50 | Severe drought | −2 |
+| SPEI ≤ −2.00 | Extreme drought | −3 |
 | missing | No data | (empty) |
 
 Each station's first two months have no SPEI-3 (a 3-month window needs 3 months of data) and are classed as "No data".
@@ -46,7 +46,7 @@ Every row records its `station`, whether that station lies inside the district (
 
 ## Drought-risk metric
 
-A month is "in drought" when it is Moderately dry or worse (SPEI-3 ≤ −1.00). For each district the pipeline reports the share of months in drought in the two WMO 30-year climate normals, 1961–1990 and 1991–2020, and the change between them in percentage points (`drought_change_pp`).
+A month is "in drought" when it is Moderate drought or worse (SPEI-3 ≤ −1.00). For each district the pipeline reports the share of months in drought in the two WMO 30-year climate normals, 1961–1990 and 1991–2020, and the change between them in percentage points (`drought_change_pp`).
 
 Why the change rather than the overall share: SPEI is standardised against each station's own 1961–2020 record, so over that full period every station spends about 16% of months at or below −1.00 by construction (17.5–20.1% here). Comparing two sub-periods shows whether drought became more or less frequent.
 
@@ -61,6 +61,10 @@ Why the change rather than the overall share: SPEI is standardised against each 
 
 The monthly table places each district at a point inside it instead of repeating its polygon for all 720 months. Join it to the risk table on `district_id` when polygons are needed.
 
+## Dashboard
+
+Both tables are loaded into CARTO Builder following the click-by-click guide in [docs/carto.md](docs/carto.md): a diverging map of the change in drought frequency, monthly severity points filtered by a time-series chart, and pop-ups showing which station each district uses. Public map link: added once the map is published.
+
 ## Limitations
 
 - The climate data is synthetic (see the top of this page). On synthetic data the change in drought frequency is random noise: the map shows that the method works, not a real trend.
@@ -70,7 +74,7 @@ The monthly table places each district at a point inside it instead of repeating
 
 ## Status
 
-Work in progress. Steps 0–5 (scaffold, inputs, loading and validation, classification, stations to districts, risk summary and export) are done.
+Work in progress. Steps 0–5 (scaffold, inputs, loading and validation, classification, stations to districts, risk summary and export) are done. Step 6 (the CARTO dashboard) is being built from [docs/carto.md](docs/carto.md).
 
 ## Quick start (Windows, PowerShell)
 
@@ -101,6 +105,7 @@ Boundaries citation: Runfola, D. et al. (2020). geoBoundaries: A global database
 ```
 ├── pyproject.toml       # package metadata, dependencies, tool config
 ├── requirements.txt     # exact pinned versions (pip freeze)
+├── docs/carto.md        # click-by-click CARTO Builder guide
 ├── src/moldova_drought/ # the pipeline package
 └── tests/               # pytest suite
 ```
