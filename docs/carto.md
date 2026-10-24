@@ -184,9 +184,9 @@ If Builder offers an option to open the legend when the map loads, switch it on.
    **Method:** each district uses the station inside it, or else the nearest station (see the pop-up for the distance). SPEI after Vicente-Serrano et al. (2010); severity thresholds after McKee et al. (1993).
 
    **Boundaries:** geoBoundaries (Runfola et al. 2020), source UNHCR and OCHA FISS, licence CC BY 3.0 IGO.
-   ```
 
-   Once the code is on GitHub, add a final line linking to the repository.
+   **Code:** [github.com/Trifan97/moldova-drought-risk](https://github.com/Trifan97/moldova-drought-risk)
+   ```
 
 ## 9. Viewer settings and sharing
 
