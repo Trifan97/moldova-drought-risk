@@ -67,6 +67,20 @@ The monthly table places each district at a point inside it instead of repeating
 
 Both tables are loaded into CARTO Builder following the click-by-click guide in [docs/carto.md](docs/carto.md): a diverging map of the change in drought frequency, monthly severity points filtered by a time-series chart, a severity-class widget, a histogram of the change, and pop-ups showing which station each district uses. The dashboard's figures reconcile with the pipeline output (for example, 16,884 Normal district-months, and 18 districts in drought in August 1963).
 
+Screenshots from 24 October 2026. The live map runs on a CARTO trial workspace and may stop working when the trial ends; these show what it contains.
+
+![Dashboard overview: districts coloured by the change in drought frequency, monthly severity points, the districts-in-drought time series, a histogram of the change and the severity-class counts](docs/img/dashboard-overview.png)
+
+*Overview: change in drought frequency between 1961–1990 and 1991–2020 (red = more frequent, teal = less), with monthly severity points, the number of districts in drought over time, and the severity-class counts.*
+
+![Hovering a monthly point shows the district, month, SPEI-3 value and severity class](docs/img/dashboard-monthly-popup.png)
+
+*Monthly point pop-up and the risk-layer legend with breaks at −4, −2, 0, 2 and 4.*
+
+![Map description with the synthetic-data warning, method and boundary attribution, next to a district pop-up showing its station and distance](docs/img/dashboard-description.png)
+
+*The map description carries the synthetic-data warning, the method and the boundary attribution; a district pop-up shows which station it uses and how far away it is.*
+
 ## Limitations
 
 - The climate data is synthetic (see the top of this page). On synthetic data the change in drought frequency is random noise: the map shows that the method works, not a real trend.
@@ -108,6 +122,7 @@ Boundaries citation: Runfola, D. et al. (2020). geoBoundaries: A global database
 ├── pyproject.toml       # package metadata, dependencies, tool config
 ├── requirements.txt     # exact pinned versions (pip freeze)
 ├── docs/carto.md        # click-by-click CARTO Builder guide
+├── docs/img/            # dashboard screenshots
 ├── src/moldova_drought/ # the pipeline package
 └── tests/               # pytest suite
 ```
