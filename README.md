@@ -63,7 +63,9 @@ The monthly table places each district at a point inside it instead of repeating
 
 ## Dashboard
 
-Both tables are loaded into CARTO Builder following the click-by-click guide in [docs/carto.md](docs/carto.md): a diverging map of the change in drought frequency, monthly severity points filtered by a time-series chart, and pop-ups showing which station each district uses. Public map link: added once the map is published.
+**Live map:** [Moldova drought-risk change (SYNTHETIC DATA, demo)](https://pinea.app.carto.com/map/e9fbaa6e-0855-4e3d-bd75-610b5b8bb5aa) on CARTO.
+
+Both tables are loaded into CARTO Builder following the click-by-click guide in [docs/carto.md](docs/carto.md): a diverging map of the change in drought frequency, monthly severity points filtered by a time-series chart, a severity-class widget, a histogram of the change, and pop-ups showing which station each district uses. The dashboard's figures reconcile with the pipeline output (for example, 16,884 Normal district-months, and 18 districts in drought in August 1963).
 
 ## Limitations
 
@@ -74,7 +76,7 @@ Both tables are loaded into CARTO Builder following the click-by-click guide in 
 
 ## Status
 
-Work in progress. Steps 0–5 (scaffold, inputs, loading and validation, classification, stations to districts, risk summary and export) are done. Step 6 (the CARTO dashboard) is being built from [docs/carto.md](docs/carto.md).
+Trial 1 is complete: the pipeline (scaffold, inputs, loading and validation, classification, stations to districts, risk summary and export) and the published CARTO dashboard.
 
 ## Quick start (Windows, PowerShell)
 

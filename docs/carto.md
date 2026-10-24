@@ -1,6 +1,8 @@
 # Building the CARTO dashboard
 
-Click-by-click guide for loading the pipeline outputs into CARTO and building the dashboard in Builder. Written against CARTO's documentation in October 2026. CARTO changes its interface over time: where the docs don't name a button, this guide says what to look for.
+Click-by-click guide for loading the pipeline outputs into CARTO and building the dashboard in Builder. Written against CARTO's documentation in October 2026 and corrected while building the map in a CARTO trial. CARTO changes its interface over time: where the docs don't name a button, this guide says what to look for.
+
+**Live map built with this guide:** [Moldova drought-risk change (SYNTHETIC DATA, demo)](https://pinea.app.carto.com/map/e9fbaa6e-0855-4e3d-bd75-610b5b8bb5aa)
 
 **What you'll build:** one map with two layers and three widgets.
 
@@ -77,7 +79,7 @@ Why these choices:
 
 1. Close the open layer panel (the **×** at its top right) to get back to the layer list, then click the monthly layer's card. Rename it: `Monthly severity (synthetic)`.
 2. In the **Fill** section, open the **Color** dropdown and choose **by severity**.
-3. Pick a **diverging** palette with **7** steps from the same family as the main map, so red/brown means dry.
+3. Pick a **diverging** palette with **7** steps from the same family as the main map, so red/brown means dry. Check the step count: with a 6-step palette only 6 categories get a colour, and "Extreme wet" falls into the grey "Others" group together with "No data".
 4. Click the sliders icon at the right of the **Fill** heading. Set **Data classification method** to **Custom**, give each palette row a category in this order, then click **Apply**:
 
    | Palette row | Category |
@@ -115,11 +117,18 @@ Interactions are off by default; switch them on per layer.
 | `driest_month` | Driest month |
 | `driest_spei_3` | Driest SPEI-3 |
 
-Also add a **Hover** pop-up with just `district` and `drought_change_pp`. Hover pop-ups show at most 5 fields.
+Also add a **Hover** pop-up with `district` and `drought_change_pp`, so viewers see the number behind each colour; `station` and `distance_km` fit too. Hover pop-ups show at most 5 fields.
 
-**Monthly layer:** a **Hover** pop-up with `district`, `date`, `spei_3` and `severity`.
+**Monthly layer:** a **Hover** pop-up with these labels:
 
-Where Builder offers number formatting, use one decimal place.
+| Field | Label | Format |
+|---|---|---|
+| `district` | District | |
+| `date` | Date | |
+| `spei_3` | SPEI-3 | 2 decimals |
+| `severity` | Severity class | |
+
+Two decimals is enough for an index like SPEI; the six stored decimals claim more precision than it has. Without a time selection, hovering a dot shows whichever of the district's 720 stacked months is on top.
 
 ## 6. Widgets
 
@@ -136,10 +145,13 @@ Click **New Widget**, pick the source, then the widget type.
      It counts districts at Moderate drought or worse. Plain `CASE WHEN` is standard SQL, so it works in any warehouse.
    - Interval: monthly if you can set it (0–37 per month; the record peaks at 33). With a yearly interval the value becomes district-months per year.
    - Chart type: Line. Title: `Districts in drought (SPEI-3 ≤ −1)`.
+   - **Split by** is optional. Without it you get one line: the total number of districts in drought. Split by `severity`, the expression gives one line per drought class (Moderate, Severe, Extreme) while the wet classes stay at 0; the published map uses this to show drought intensity. Don't combine Split by with plain COUNT: that draws 8 overlapping lines across 720 months, which is unreadable.
    - If the custom expression is rejected, use **AVG** of `spei_3` instead and title it `Average SPEI-3 across districts`. Treat it as an indicator only: an average of standardised values is not itself a standardised index.
 2. **Category**, source `synthetic_district_monthly_spei`:
    - Column `severity`, operation **COUNT**.
-   - Title: `District-months by severity`. It follows whatever period you select in the time-series chart.
+   - Title: `Severity classes`. It follows whatever period you select in the time-series chart.
+   - A Pie widget shows the same data, but its smallest and most interesting slices (Extreme drought 1.3%, Extreme wet 1.2%) are hard to tell apart; the Category widget's bars and counts read better.
+   - Its totals must match the pipeline output: Normal 16,884, Moderate wet 3,292, Moderate drought 3,080, Severe drought 1,609, Severe wet 1,036, and "Others" 739 (Extreme drought 342 + Extreme wet 323 + No data 74).
 3. **Histogram**, source `synthetic_district_drought_risk`:
    - Column `drought_change_pp`.
    - Title: `Districts by change in drought frequency (pp)`.
@@ -148,25 +160,26 @@ Selecting a period in the time-series chart filters only the monthly layer and i
 
 ## 7. Legend
 
-In each layer's **Legend** tab, set **Custom labels**:
+The legend shows each layer's name, so rename both layers first (step 3 and step 4). Then open the **Legend** panel from the icons down the left edge of Builder. Each layer has a card with a visibility switch, an editable label for the colour column, and an editable label for every class.
 
-- Risk layer: `Change in % of months in drought, 1961–1990 → 1991–2020 (percentage points)`
-- Monthly layer: `Monthly SPEI-3 severity`
+1. **Check the classes.** The risk layer should read `< -4.00`, `-4.00 – -2.00`, `-2.00 – 0.00`, `0.00 – 2.00`, `2.00 – 4.00`, `> 4.00`. A different value there means a break was mistyped in step 3; one entered as 2.4 instead of 4 makes the red side lopsided.
+2. **Optional friendlier labels.** For example, set the column label to `Change in drought months, 1961–1990 → 1991–2020 (pp)` and the classes to `below −4 (much less drought)` … `above +4 (much more drought)`. For the monthly layer, `SPEI-3 severity class`.
+3. **Order of the monthly classes.** Builder sorts by **Value** (most frequent first) or **Alphabetical**; neither gives Extreme drought → Extreme wet. Keep **Value**: alphabetical puts "Extreme drought" next to "Extreme wet", and the colours already carry the dry-to-wet order.
 
 If Builder offers an option to open the legend when the map loads, switch it on.
 
 ## 8. Basemap, title and description
 
-1. **Basemap:** a light one such as CARTO Positron, so both brown and teal read clearly.
-2. **Map title:** `Moldova drought-risk change (SYNTHETIC DATA, demo)`.
+1. **Basemap:** a light one such as CARTO Positron, so both red and teal read clearly.
+2. **Map title:** click the map's name at the top left of Builder and enter `Moldova drought-risk change (SYNTHETIC DATA, demo)`.
 3. **Description:** click the **i** (Show map description) button at the top right and paste this Markdown:
 
    ```markdown
    **Synthetic data: not real observations.** The climate values were generated to mimic the statistics of Moldovan station records. Do not use them to judge drought conditions in Moldova: this map demonstrates the method, and on synthetic data the pattern is random.
 
-   **Main map:** change in the share of months in drought (SPEI-3 ≤ −1.00) between the WMO climate normals 1961–1990 and 1991–2020, in percentage points. Brown = drought became more frequent, teal = less frequent.
+   **Main map:** change in the share of months in drought (SPEI-3 ≤ −1.00) between the WMO climate normals 1961–1990 and 1991–2020, in percentage points. Red = drought became more frequent, teal = less frequent.
 
-   **Points:** monthly SPEI-3 severity for each district. Select a period in the time-series chart to filter them.
+   **Points:** monthly SPEI-3 severity class for each district. Select a period in the time-series chart to filter them.
 
    **Method:** each district uses the station inside it, or else the nearest station (see the pop-up for the distance). SPEI after Vicente-Serrano et al. (2010); severity thresholds after McKee et al. (1993).
 
@@ -188,9 +201,9 @@ If Builder offers an option to open the legend when the map loads, switch it on.
 Open the link in a private browser window, where you're not signed in, and check:
 
 - [ ] The title says SYNTHETIC DATA and the description opens first.
-- [ ] Brown districts have a positive change in the pop-up, teal ones a negative change.
+- [ ] Red districts have a positive change in the pop-up, teal ones a negative change.
 - [ ] Clicking a district shows its station, whether the station is inside, and the distance.
-- [ ] Selecting a period in the time-series chart filters the points and the category widget.
+- [ ] Selecting a period in the time-series chart filters the points and the category widget. For August 1963 the tooltip shows 18 districts in drought (11 Moderate, 5 Severe, 2 Extreme), and the map should show the same 18 drought-coloured dots.
 - [ ] Both legend labels read correctly.
 - [ ] The boundaries credit (geoBoundaries, CC BY 3.0 IGO) is in the description.
 
